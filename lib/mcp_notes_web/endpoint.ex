@@ -39,6 +39,8 @@ defmodule McpNotesWeb.Endpoint do
       otp_app: :mcp_notes,
       path: "/ash_ai/mcp"
 
+    # plug AshAi.Mcp.Router
+
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader

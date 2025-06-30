@@ -44,7 +44,8 @@ config :spark,
 
 config :mcp_notes,
   ecto_repos: [McpNotes.Repo],
-  generators: [timestamp_type: :utc_datetime]
+  generators: [timestamp_type: :utc_datetime],
+  ash_domains: [McpNotes.Accounts, McpNotes.Notes]
 
 # Configures the endpoint
 config :mcp_notes, McpNotesWeb.Endpoint,

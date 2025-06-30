@@ -34,6 +34,8 @@ defmodule McpNotes.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:picosat_elixir, "~> 0.2"},
+      {:ash_authentication, "~> 4.0"},
       {:sourceror, "~> 1.8", only: [:dev, :test]},
       {:usage_rules, "~> 0.1", only: [:dev]},
       {:ash_ai, "~> 0.2"},

@@ -16,6 +16,7 @@ defmodule McpNotes.Application do
       {Phoenix.PubSub, name: McpNotes.PubSub},
       # Start a worker by calling: McpNotes.Worker.start_link(arg)
       # {McpNotes.Worker, arg},
+      {AshAuthentication.Supervisor, otp_app: :mcp_notes},
       # Start to serve requests, typically the last entry
       McpNotesWeb.Endpoint
     ]

@@ -1,0 +1,82 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "name": "AI Research Platform",
+      "description": "Machine learning model development and evaluation framework for next-generation AI applications",
+      "noteCount": 12,
+      "lastUpdated": "2 hours ago",
+      "color": "bg-purple-500"
+    },
+    {
+      "id": 2,
+      "name": "E-commerce Redesign",
+      "description": "Complete overhaul of the shopping experience and checkout flow to improve conversion rates",
+      "noteCount": 8,
+      "lastUpdated": "1 day ago",
+      "color": "bg-purple-600"
+    },
+    {
+      "id": 3,
+      "name": "Mobile App Development",
+      "description": "Cross-platform mobile application for customer engagement and real-time notifications",
+      "noteCount": 15,
+      "lastUpdated": "3 days ago",
+      "color": "bg-purple-400"
+    },
+    {
+      "id": 4,
+      "name": "Data Analytics Dashboard",
+      "description": "Real-time analytics and reporting system for business intelligence and decision making",
+      "noteCount": 6,
+      "lastUpdated": "1 week ago",
+      "color": "bg-purple-500"
+    }
+  ],
+  "notesByProject": {
+    "1": [
+      {
+        "id": 1,
+        "title": "Model Architecture Research",
+        "preview": "Exploring transformer architectures for improved performance. Key findings include attention mechanism optimizations and layer normalization techniques that could improve model accuracy by up to 15%...",
+        "content": "# Model Architecture Research\n\n## Overview\nExploring transformer architectures for improved performance. Key findings include attention mechanism optimizations and layer normalization techniques.\n\n## Key Findings\n- Attention mechanism optimizations can improve performance by 15%\n- Layer normalization placement affects convergence speed\n- Multi-head attention with 8 heads shows optimal results\n- Residual connections are crucial for deep architectures\n\n## Implementation Details\n- Modified attention computation for better efficiency\n- Custom layer normalization positioning\n- Optimized feed-forward network dimensions\n\n## Next Steps\n1. Implement proposed architecture changes\n2. Run comparative benchmarks against baseline models\n3. Document performance improvements and trade-offs\n4. Prepare for production deployment",
+        "createdAt": "2024-01-15",
+        "tags": ["research", "architecture", "transformers", "optimization"]
+      },
+      {
+        "id": 2,
+        "title": "Training Data Pipeline",
+        "preview": "Optimizing data preprocessing and augmentation strategies. Current pipeline processes 10M samples per hour with 99.2% accuracy. Implementing real-time quality monitoring...",
+        "content": "# Training Data Pipeline\n\n## Current Status\nOptimizing data preprocessing and augmentation strategies. Current pipeline processes 10M samples per hour with 99.2% accuracy.\n\n## Pipeline Components\n- **Data Ingestion**: Multi-source data collection with validation\n- **Preprocessing**: Real-time cleaning and normalization\n- **Augmentation**: Advanced techniques for improved generalization\n- **Quality Assurance**: Automated monitoring and alerting\n- **Storage**: Efficient data storage and retrieval systems\n\n## Performance Metrics\n- Throughput: 10M samples/hour\n- Accuracy: 99.2%\n- Latency: <50ms per sample\n- Error Rate: 0.01%\n\n## Recent Improvements\n- Implemented parallel processing for 3x speed increase\n- Added real-time anomaly detection\n- Optimized memory usage by 40%",
+        "createdAt": "2024-01-14",
+        "tags": ["pipeline", "data", "preprocessing", "performance"]
+      },
+      {
+        "id": 3,
+        "title": "Evaluation Metrics Framework",
+        "preview": "Comprehensive evaluation system for model performance assessment. Includes precision, recall, F1-score, and custom domain-specific metrics for bias detection and fairness...",
+        "content": "# Evaluation Metrics Framework\n\n## Standard Metrics\n- **Precision**: 0.94 (94% of positive predictions are correct)\n- **Recall**: 0.91 (91% of actual positives are identified)\n- **F1-Score**: 0.925 (harmonic mean of precision and recall)\n- **Accuracy**: 0.93 (93% overall correctness)\n\n## Custom Metrics\n- **Domain-specific accuracy**: Tailored for our use case\n- **Bias detection**: Fairness across different demographics\n- **Robustness testing**: Performance under adversarial conditions\n- **Calibration**: Confidence score reliability\n\n## Implementation\n- Built using scikit-learn and custom evaluation modules\n- Automated reporting and visualization\n- Integration with MLflow for experiment tracking\n- Real-time monitoring dashboard\n\n## Insights\n- Model performs consistently across different data segments\n- Slight bias detected in age group 18-25, mitigation in progress\n- Robustness tests show 89% accuracy under adversarial attacks",
+        "createdAt": "2024-01-13",
+        "tags": ["evaluation", "metrics", "testing", "fairness"]
+      }
+    ],
+    "2": [
+      {
+        "id": 4,
+        "title": "User Experience Research",
+        "preview": "Comprehensive analysis of current user journey and pain points. Survey results from 500+ users reveal key areas for improvement in checkout flow and navigation...",
+        "content": "# User Experience Research\n\n## Survey Results\nComprehensive analysis of current user journey and pain points. Survey results from 500+ users reveal critical areas for improvement.\n\n## Key Findings\n- **Cart Abandonment**: 67% of users abandon cart during checkout\n- **Navigation Issues**: Confusion in product category structure\n- **Mobile Experience**: Significant improvement needed for mobile users\n- **Search Functionality**: Users struggle to find specific products\n- **Loading Times**: 23% of users cite slow loading as main frustration\n\n## User Personas\n1. **Busy Professional** (35%): Values speed and efficiency\n2. **Price-Conscious Shopper** (28%): Focuses on deals and comparisons\n3. **Tech Enthusiast** (22%): Expects advanced features and customization\n4. **Casual Browser** (15%): Enjoys discovery and exploration\n\n## Recommendations\n1. **Simplify Checkout**: Reduce steps from 5 to 3\n2. **Redesign Navigation**: Implement mega-menu structure\n3. **Optimize Mobile**: Mobile-first responsive design\n4. **Improve Search**: Add filters and smart suggestions\n5. **Performance**: Target <2s page load times",
+        "createdAt": "2024-01-12",
+        "tags": ["ux", "research", "survey", "optimization"]
+      },
+      {
+        "id": 5,
+        "title": "Design System Updates",
+        "preview": "New component library and design tokens for consistent branding. Includes refreshed color palette, typography scale, and accessibility improvements...",
+        "content": "# Design System Updates\n\n## Component Library\nNew component library and design tokens for consistent branding across all touchpoints.\n\n## Major Updates\n- **Color Palette**: Refreshed brand colors with better contrast ratios\n- **Typography**: New font stack with improved readability\n- **Spacing System**: Consistent 8px grid system\n- **Accessibility**: WCAG 2.1 AA compliance across all components\n- **Dark Mode**: Full dark theme support\n\n## New Components\n- Advanced data tables with sorting and filtering\n- Interactive charts and graphs\n- Multi-step form components\n- Toast notification system\n- Loading states and skeletons\n\n## Implementation Timeline\n- **Week 1**: Design tokens and core utilities\n- **Week 2**: Basic components (buttons, inputs, cards)\n- **Week 3**: Complex components (tables, forms, modals)\n- **Week 4**: Documentation and developer guidelines\n\n## Impact\n- 40% reduction in design-to-development time\n- Improved consistency across 15+ products\n- Better accessibility scores (95+ Lighthouse)\n- Enhanced developer experience with TypeScript support",
+        "createdAt": "2024-01-11",
+        "tags": ["design", "components", "branding", "accessibility"]
+      }
+    ]
+  }
+}

@@ -29,9 +29,9 @@ defmodule :"Elixir.McpNotes.Repo.Migrations.Add-tokens-for-auth" do
   end
 
   def down do
-    drop_if_exists unique_index(:api_keys, [:api_key_hash], name: "api_keys_unique_api_key_index")
+    # drop_if_exists unique_index(:api_keys, [:api_key_hash], name: "api_keys_unique_api_key_index")
 
-    drop constraint(:api_keys, "api_keys_user_id_fkey")
+    # drop constraint(:api_keys, "api_keys_user_id_fkey")
 
     drop table(:api_keys)
 

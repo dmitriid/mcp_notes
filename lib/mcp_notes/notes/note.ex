@@ -1,12 +1,21 @@
 defmodule McpNotes.Notes.Note do
   use Ash.Resource,
     domain: McpNotes.Notes,
-    data_layer: AshSqlite.DataLayer,
-    extensions: [AshArchival.Resource]
+    data_layer: AshSqlite.DataLayer
 
   sqlite do
     table "notes"
     repo McpNotes.Repo
+
+    references do
+      reference :project, on_delete: :delete, name: "notes_to_projects_fkey"
+    end
+  end
+
+  code_interface do
+    define :list_notes
+    define :update_note
+    define :add_note_to_project
   end
 
   actions do
@@ -38,7 +47,9 @@ defmodule McpNotes.Notes.Note do
         allow_nil? false
       end
 
-      change manage_relationship(:project_id, :project, type: :append)
+      change manage_relationship(:project_id, :project, type: :append) do
+        only_when_valid? true
+      end
     end
 
     update :update do
@@ -63,18 +74,43 @@ defmodule McpNotes.Notes.Note do
         allow_nil? false
       end
 
-      change fn changeset, context ->
-        IO.inspect({changeset, context})
+      change fn changeset, _ ->
+        project_name = Ash.Changeset.get_argument(changeset, :project_name)
+        content = Ash.Changeset.get_argument(changeset, :content)
 
-        case Ash.get(McpNotes.Notes.Project, name: changeset.arguments.project_name) do
+        case McpNotes.Notes.Project.by_name(project_name) do
           {:ok, project} ->
             changeset
-            |> Ash.Changeset.force_change_attribute(:content, changeset.arguments.content)
+            |> Ash.Changeset.force_change_attribute(:content, content)
             |> Ash.Changeset.force_change_attribute(:project_id, project.id)
 
           {:error, _} ->
             Ash.Changeset.add_error(changeset, field: :project_name, message: "Project not found")
         end
+      end
+    end
+
+    update :update_note do
+      description "Update content of a specific note by ID"
+      require_atomic? false
+
+      argument :note_id, :uuid_v7 do
+        description "ID of the note to update"
+        allow_nil? false
+      end
+
+      argument :content, :string do
+        description "New content for the note"
+        allow_nil? false
+      end
+
+      change fn changeset, _ ->
+        note_id = Ash.Changeset.get_argument(changeset, :note_id)
+        content = Ash.Changeset.get_argument(changeset, :content)
+
+        changeset
+        |> Ash.Changeset.force_change_attribute(:id, note_id)
+        |> Ash.Changeset.force_change_attribute(:content, content)
       end
     end
   end

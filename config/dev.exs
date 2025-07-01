@@ -56,7 +56,8 @@ config :mcp_notes, McpNotesWeb.Endpoint,
     patterns: [
       ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/mcp_notes_web/(?:controllers|live|components|router)/?.*\.(ex|heex)$"
+      ~r"lib/mcp_notes_web/(?:controllers|live|components|router)/?.*\.(ex|heex)$",
+      ~r"lib/mcp_notes/(?:notes|accounts)/?.*\.(ex|heex)$"
     ]
   ]
 

@@ -28,11 +28,12 @@ defmodule McpNotesWeb.Router do
       required?: false
   end
 
-  # scope "/", McpNotesWeb do
-  #   pipe_through :browser
+  scope "/", McpNotesWeb do
+    pipe_through :browser
 
-  #   get "/", PageController, :home
-  # end
+    live "/", ProjectsLive
+    live "/projects/:id", ProjectDetailLive
+  end
 
   scope "/mcp" do
     pipe_through :mcp
@@ -44,6 +45,7 @@ defmodule McpNotesWeb.Router do
         :list_notes_for_project,
         :add_project,
         :add_note_to_project,
+        :update_note,
         :delete_project,
         :delete_notes_for_project,
         :stats

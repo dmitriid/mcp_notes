@@ -16,6 +16,7 @@ defmodule McpNotes.Notes.Project do
     define :list_full_projects
     define :list_recent_projects
     define :add_project
+    define :delete_project
     define :delete_notes_for_project
   end
 
@@ -63,24 +64,32 @@ defmodule McpNotes.Notes.Project do
       accept [:name]
     end
 
-    destroy :delete_project do
+    action :delete_project, :map do
       description "Remove project and all its notes"
-      require_atomic? false
 
       argument :project_name, :string do
         description "Name of the project to delete"
         allow_nil? false
       end
 
-      change fn changeset, _ ->
-        project_name = Ash.Changeset.get_argument(changeset, :project_name)
+      run fn input, _ ->
+        project_name = Map.get(input.arguments, :project_name)
 
         case __MODULE__.by_name(project_name) do
           {:ok, project} ->
-            Ash.Changeset.force_change_attribute(changeset, :id, project.id)
+            case Ash.destroy(project) do
+              :ok ->
+                {:ok, %{message: "Deleted project '#{project_name}'"}}
+
+              {:ok, _} ->
+                {:ok, %{message: "Deleted project '#{project_name}'"}}
+
+              {:error, error} ->
+                {:error, "Failed to delete project: #{inspect(error)}"}
+            end
 
           {:error, _} ->
-            Ash.Changeset.add_error(changeset, field: :project_name, message: "Project not found")
+            {:error, "Project not found: #{project_name}"}
         end
       end
     end

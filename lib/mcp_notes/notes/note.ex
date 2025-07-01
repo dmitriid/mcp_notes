@@ -90,9 +90,8 @@ defmodule McpNotes.Notes.Note do
       end
     end
 
-    update :update_note do
+    action :update_note do
       description "Update content of a specific note by ID"
-      require_atomic? false
 
       argument :note_id, :uuid_v7 do
         description "ID of the note to update"
@@ -104,13 +103,23 @@ defmodule McpNotes.Notes.Note do
         allow_nil? false
       end
 
-      change fn changeset, _ ->
-        note_id = Ash.Changeset.get_argument(changeset, :note_id)
-        content = Ash.Changeset.get_argument(changeset, :content)
+      run fn input, _ ->
+        note_id = Map.get(input.arguments, :note_id)
+        content = Map.get(input.arguments, :content)
 
-        changeset
-        |> Ash.Changeset.force_change_attribute(:id, note_id)
-        |> Ash.Changeset.force_change_attribute(:content, content)
+        case Ash.get(__MODULE__, note_id) do
+          {:ok, note} ->
+            case Ash.update(note, %{content: content}) do
+              {:ok, _updated_note} ->
+                :ok
+
+              {:error, error} ->
+                {:error, "Failed to update note: #{inspect(error)}"}
+            end
+
+          {:error, _} ->
+            {:error, "Note not found: #{note_id}"}
+        end
       end
     end
   end

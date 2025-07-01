@@ -89,8 +89,9 @@ defmodule McpNotesWeb.Components.Navigation do
   end
 
   def get_project_icon(project) do
-    icons = ["hero-book-open", "hero-light-bulb", "hero-flag", "hero-users"]
-    index = :erlang.phash2(project.name, length(icons))
-    Enum.at(icons, index)
+    case length(project.notes) do
+      0 -> "hero-document"
+      _ -> "hero-document-duplicate"
+    end
   end
 end

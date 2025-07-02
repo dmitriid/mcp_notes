@@ -5,6 +5,11 @@ defmodule McpNotesWeb.ProjectsLive do
 
   @impl true
   def mount(_params, _session, socket) do
+    if connected?(socket) do
+      # Subscribe to all project changes
+      Phoenix.PubSub.subscribe(McpNotes.PubSub, "project:projects:all")
+    end
+    
     {:ok, projects} = Project.list_full_projects()
     {:ok, recent_projects} = Project.list_recent_projects()
     
@@ -296,6 +301,35 @@ defmodule McpNotesWeb.ProjectsLive do
     end
   end
 
+  # PubSub notification handlers
+  @impl true
+  def handle_info(%Phoenix.Socket.Broadcast{event: _event, payload: %Ash.Notifier.Notification{action: action, data: data}}, socket) do
+    case action.name do
+      action_name when action_name in [:create, :add_project] ->
+        # Reload projects list
+        {:ok, projects} = Project.list_full_projects()
+        {:ok, recent_projects} = Project.list_recent_projects()
+        {:noreply, assign(socket, projects: projects, recent_projects: recent_projects)}
+        
+      :update ->
+        # Update specific project in list
+        {:ok, projects} = Project.list_full_projects()
+        {:ok, recent_projects} = Project.list_recent_projects()
+        {:noreply, assign(socket, projects: projects, recent_projects: recent_projects)}
+        
+      action_name when action_name in [:destroy, :delete_project] ->
+        # Remove project from list
+        projects = Enum.reject(socket.assigns.projects, &(&1.id == data.id))
+        recent_projects = Enum.reject(socket.assigns.recent_projects, &(&1.id == data.id))
+        {:noreply, assign(socket, projects: projects, recent_projects: recent_projects)}
+        
+      :delete_notes_for_project ->
+        # Just reload to get updated last_note_updated_at
+        {:ok, projects} = Project.list_full_projects()
+        {:ok, recent_projects} = Project.list_recent_projects()
+        {:noreply, assign(socket, projects: projects, recent_projects: recent_projects)}
+    end
+  end
 
   defp format_date(datetime) do
     case Timex.Format.DateTime.Formatters.Relative.format(datetime, "{relative}") do

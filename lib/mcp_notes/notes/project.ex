@@ -1,7 +1,8 @@
 defmodule McpNotes.Notes.Project do
   use Ash.Resource,
     domain: McpNotes.Notes,
-    data_layer: AshSqlite.DataLayer
+    data_layer: AshSqlite.DataLayer,
+    notifiers: [Ash.Notifier.PubSub]
 
   import Ash.Expr
 
@@ -114,6 +115,19 @@ defmodule McpNotes.Notes.Project do
 
             case result.status do
               :success ->
+                # Manually broadcast pubsub event for LiveView updates
+                Phoenix.PubSub.broadcast(
+                  McpNotes.PubSub,
+                  "project:notes_deleted:#{project.id}",
+                  {:notes_deleted, project}
+                )
+                
+                Phoenix.PubSub.broadcast(
+                  McpNotes.PubSub,
+                  "projects:all",
+                  {:notes_deleted, project}
+                )
+
                 {:ok, %{message: "Deleted notes from project '#{project_name}'"}}
 
               _ ->
@@ -153,6 +167,22 @@ defmodule McpNotes.Notes.Project do
         end
       end
     end
+  end
+
+  pub_sub do
+    module McpNotesWeb.Endpoint
+    prefix "project"
+
+    publish :create, ["created", :id]
+    publish :update, ["updated", :id]
+    publish :destroy, ["destroyed", :id]
+
+    publish :add_project, ["created", :id]
+
+    publish :create, "projects:all"
+    publish :update, "projects:all"
+    publish :destroy, "projects:all"
+    publish :add_project, "projects:all"
   end
 
   attributes do

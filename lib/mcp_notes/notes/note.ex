@@ -1,7 +1,8 @@
 defmodule McpNotes.Notes.Note do
   use Ash.Resource,
     domain: McpNotes.Notes,
-    data_layer: AshSqlite.DataLayer
+    data_layer: AshSqlite.DataLayer,
+    notifiers: [Ash.Notifier.PubSub]
 
   sqlite do
     table "notes"
@@ -110,7 +111,22 @@ defmodule McpNotes.Notes.Note do
         case Ash.get(__MODULE__, note_id) do
           {:ok, note} ->
             case Ash.update(note, %{content: content}) do
-              {:ok, _updated_note} ->
+              {:ok, updated_note} ->
+                # Manually broadcast pubsub event for LiveView updates
+                Phoenix.PubSub.broadcast(
+                  McpNotes.PubSub,
+                  "note:updated:#{updated_note.project_id}",
+                  %Phoenix.Socket.Broadcast{
+                    topic: "note:updated:#{updated_note.project_id}",
+                    event: "notification",
+                    payload: %Ash.Notifier.Notification{
+                      resource: __MODULE__,
+                      action: %{name: :update},
+                      data: updated_note
+                    }
+                  }
+                )
+                
                 :ok
 
               {:error, error} ->
@@ -122,6 +138,52 @@ defmodule McpNotes.Notes.Note do
         end
       end
     end
+
+    action :delete_note, :map do
+      description "Delete a specific note by ID"
+
+      argument :note_id, :uuid_v7 do
+        description "ID of the note to delete"
+        allow_nil? false
+      end
+
+      run fn input, _ ->
+        note_id = Map.get(input.arguments, :note_id)
+
+        case Ash.get(__MODULE__, note_id) do
+          {:ok, note} ->
+            case Ash.destroy(note) do
+              :ok ->
+                {:ok, %{message: "Note deleted successfully"}}
+
+              {:ok, _} ->
+                {:ok, %{message: "Note deleted successfully"}}
+
+              {:error, error} ->
+                {:error, "Failed to delete note: #{inspect(error)}"}
+            end
+
+          {:error, _} ->
+            {:error, "Note not found: #{note_id}"}
+        end
+      end
+    end
+  end
+
+  pub_sub do
+    module McpNotesWeb.Endpoint
+    prefix "note"
+
+    publish :create, ["created", :project_id]
+    publish :update, ["updated", :project_id]
+    publish :destroy, ["destroyed", :project_id]
+
+    publish :update, ["updated", :id]
+    publish :destroy, ["destroyed", :id]
+
+    publish :add_note_to_project, ["created", :project_id]
+
+    publish :add_note_to_project, "notes:all"
   end
 
   attributes do

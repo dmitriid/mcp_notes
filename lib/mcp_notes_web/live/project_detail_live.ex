@@ -290,7 +290,7 @@ defmodule McpNotesWeb.ProjectDetailLive do
                             </div>
                           <% else %>
                             <%= if @expanded_note == note.id do %>
-                              <div class="pt-4 text-gray-800 border-t border-gray-100 mt-4">
+                              <div class="pt-4 text-gray-800 border-t border-gray-100 mt-4 expanded-note-content">
                                 {render_markdown_content(note.content)}
                               </div>
                             <% else %>
@@ -604,7 +604,9 @@ defmodule McpNotesWeb.ProjectDetailLive do
 
       {:error, _html_doc, _error_messages} ->
         assigns = %{markdown: markdown}
-        ~H"<div class=\"whitespace-pre-wrap\">{@markdown}</div>"
+        ~H"""
+        <div class="whitespace-pre-wrap">{@markdown}</div>
+        """
     end
   end
 end

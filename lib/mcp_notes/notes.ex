@@ -1,4 +1,11 @@
 defmodule McpNotes.Notes do
+  @moduledoc """
+  The Notes context. Manages projects and notes with AI tool integration.
+  
+  Provides tools for listing, creating, updating, and deleting projects and notes,
+  as well as retrieving statistics about the stored data.
+  """
+  
   use Ash.Domain, extensions: [AshAi]
 
   alias McpNotes.Notes.{Project, Note}

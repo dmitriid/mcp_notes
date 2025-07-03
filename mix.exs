@@ -34,6 +34,7 @@ defmodule McpNotes.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:credo, "~> 1.0"},
       {:earmark, "~> 1.0"},
       {:timex, "~> 3.0"},
       {:picosat_elixir, "~> 0.2"},

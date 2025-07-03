@@ -1,4 +1,11 @@
 defmodule McpNotes.Notes.Note do
+  @moduledoc """
+  Resource representing individual notes within projects.
+  
+  Notes belong to projects and are automatically sorted by creation time in descending order.
+  Supports real-time updates via PubSub notifications.
+  """
+  
   use Ash.Resource,
     domain: McpNotes.Notes,
     data_layer: AshSqlite.DataLayer,

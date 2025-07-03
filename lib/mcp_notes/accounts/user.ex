@@ -1,4 +1,11 @@
 defmodule McpNotes.Accounts.User do
+  @moduledoc """
+  User resource with API key authentication support.
+  
+  Users can authenticate using API keys through the AshAuthentication extension.
+  Valid API keys are those that have not yet expired.
+  """
+  
   use Ash.Resource,
     otp_app: :mcp_notes,
     domain: McpNotes.Notes,

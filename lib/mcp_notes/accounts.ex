@@ -1,4 +1,8 @@
 defmodule McpNotes.Accounts do
+  @moduledoc """
+  The Accounts context. Manages user accounts, authentication tokens, and API keys.
+  """
+  
   use Ash.Domain,
     otp_app: :mcp_notes
 

@@ -1,4 +1,12 @@
 defmodule McpNotes.Notes.Project do
+  @moduledoc """
+  Resource representing projects that contain notes.
+  
+  Projects are the top-level organizational unit for notes. They support
+  various queries including alphabetical sorting and sorting by recent activity.
+  Includes actions for project and note management with real-time PubSub notifications.
+  """
+  
   use Ash.Resource,
     domain: McpNotes.Notes,
     data_layer: AshSqlite.DataLayer,
@@ -144,24 +152,25 @@ defmodule McpNotes.Notes.Project do
       description "Returns total number of projects, total number of notes, and a list of projects with number of notes per project"
 
       run fn _input, _ ->
-        with {:ok, projects} <- __MODULE__.list_full_projects() do
-          project_stats = %{
-            total_projects: length(projects),
-            total_notes:
-              Enum.reduce(projects, 0, fn project, acc -> acc + length(project.notes) end),
-            projects:
-              projects
-              |> Enum.map(fn project ->
-                %{
-                  name: project.name,
-                  note_count: length(project.notes)
-                }
-              end)
-              |> Enum.sort_by(& &1.name)
-          }
+        case __MODULE__.list_full_projects() do
+          {:ok, projects} ->
+            project_stats = %{
+              total_projects: length(projects),
+              total_notes:
+                Enum.reduce(projects, 0, fn project, acc -> acc + length(project.notes) end),
+              projects:
+                projects
+                |> Enum.map(fn project ->
+                  %{
+                    name: project.name,
+                    note_count: length(project.notes)
+                  }
+                end)
+                |> Enum.sort_by(& &1.name)
+            }
 
-          {:ok, project_stats}
-        else
+            {:ok, project_stats}
+          
           {:error, error} ->
             {:error, Exception.message(error)}
         end

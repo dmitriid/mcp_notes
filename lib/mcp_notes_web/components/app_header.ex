@@ -1,4 +1,11 @@
 defmodule McpNotesWeb.Components.AppHeader do
+  @moduledoc """
+  Application header component that displays navigation and action buttons.
+  
+  Includes mobile navigation toggle, back button support, and a context-aware
+  "New" button that creates either projects or notes depending on the current view.
+  """
+  
   use McpNotesWeb, :html
   alias McpNotesWeb.Components.{Icon, Navigation}
 

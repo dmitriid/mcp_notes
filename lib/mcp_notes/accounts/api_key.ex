@@ -1,4 +1,11 @@
 defmodule McpNotes.Accounts.ApiKey do
+  @moduledoc """
+  Resource representing API keys for user authentication.
+  
+  API keys are hashed and stored with an expiration date. The `valid` calculation
+  checks if the key has not yet expired.
+  """
+  
   use Ash.Resource,
     otp_app: :mcp_notes,
     domain: McpNotes.Accounts,

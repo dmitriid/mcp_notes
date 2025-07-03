@@ -1,4 +1,11 @@
 defmodule McpNotesWeb.Components.Navigation do
+  @moduledoc """
+  Navigation components for the application.
+  
+  Includes the main navigation sidebar and mobile navigation overlay.
+  Displays recent projects and provides navigation between different views.
+  """
+  
   use McpNotesWeb, :html
   alias McpNotesWeb.Components.Icon
 

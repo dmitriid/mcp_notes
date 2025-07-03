@@ -551,9 +551,10 @@ defmodule McpNotesWeb.ProjectDetailLive do
   defp project_description(project) do
     note_count = length(project.notes)
 
-    cond do
-      note_count == 0 -> "No notes yet"
-      true -> "Project workspace"
+    if note_count == 0 do
+      "No notes yet"
+    else
+      "Project workspace"
     end
   end
 
@@ -582,8 +583,9 @@ defmodule McpNotesWeb.ProjectDetailLive do
 
     preview_lines =
       lines
-      |> Enum.reject(&String.starts_with?(&1, "#"))
-      |> Enum.reject(&(String.trim(&1) == ""))
+      |> Enum.reject(fn line ->
+        String.starts_with?(line, "#") || String.trim(line) == ""
+      end)
       |> Enum.take(3)
       |> Enum.join(" ")
 
